@@ -14,7 +14,7 @@ public class LevelUpController {
     @Autowired
     LevelUpRepository repo;
 
-    @RequestMapping(value = "/levels", method = RequestMethod.GET)
+   @RequestMapping(value = "/levels", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Level> getAllLevels() {
         return repo.findAll();
