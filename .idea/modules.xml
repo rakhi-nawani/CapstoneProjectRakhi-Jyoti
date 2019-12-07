@@ -2,13 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AdminAPIService/AdminAPIService.iml" filepath="$PROJECT_DIR$/AdminAPIService/AdminAPIService.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/CapstoneProjectRakhi-Jyoti.iml" filepath="$PROJECT_DIR$/.idea/CapstoneProjectRakhi-Jyoti.iml" />
       <module fileurl="file://$PROJECT_DIR$/customer-crud-service/CustomerService.iml" filepath="$PROJECT_DIR$/customer-crud-service/CustomerService.iml" />
       <module fileurl="file://$PROJECT_DIR$/product-crud-service/ProductService.iml" filepath="$PROJECT_DIR$/product-crud-service/ProductService.iml" />
       <module fileurl="file://$PROJECT_DIR$/Service-Registry/Service-Registry.iml" filepath="$PROJECT_DIR$/Service-Registry/Service-Registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circuit-breaker-reading/circuit-breaker-reading.iml" filepath="$PROJECT_DIR$/circuit-breaker-reading/circuit-breaker-reading.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/invoice-crud-service/invoice-crud-service.iml" filepath="$PROJECT_DIR$/invoice-crud-service/invoice-crud-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/level-up-crud-service/level-up-crud-service.iml" filepath="$PROJECT_DIR$/level-up-crud-service/level-up-crud-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/retail-edge-service/retail-edge-service.iml" filepath="$PROJECT_DIR$/retail-edge-service/retail-edge-service.iml" />
     </modules>
   </component>
 </project>

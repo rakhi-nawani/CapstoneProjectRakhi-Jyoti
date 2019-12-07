@@ -127,5 +127,18 @@ public class InvoiceControllerTest {
         verify(repo, times(1)).delete(invoice);
     }
 
+    @Test
+    public void shouldGetInvoiceByCustomerId() throws Exception {
+        Invoice invoice = new Invoice();
+        invoice.setInvoiceId(1);
+        invoice.setCustomerId(100);
+        invoice.setPurchaseDate(LocalDate.of(2019,11,30));
+        jsonObject = mapper.writeValueAsString(invoice);
+        when(repo.getOne(100)).thenReturn(invoice);
+        mockMvc.perform(MockMvcRequestBuilders.get("/invoice/customerId/{customerId}",100).accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonObject));
+    }
 
 }

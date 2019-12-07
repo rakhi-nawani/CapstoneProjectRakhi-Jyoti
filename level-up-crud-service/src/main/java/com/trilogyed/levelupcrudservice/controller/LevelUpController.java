@@ -45,5 +45,11 @@ public class LevelUpController {
         repo.delete(level);
     }
 
+    // Custom Method
+    @RequestMapping(value = "/level/customerId/{customerId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public int findLevelPointsByCustomerId(@PathVariable int customerId) {
+        return repo.findLevelByCustomerId(customerId);
+    }
 
 }

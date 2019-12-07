@@ -130,7 +130,20 @@ public class LevelUpControllerTest {
         verify(repo, times(1)).delete(level);
     }
 
-
+    @Test
+    public void shouldGetLevelByCustomerId() throws Exception {
+        Level level = new Level();
+        level.setLevelUpId(1);
+        level.setCustomerId(100);
+        level.setPoints(250);
+        level.setMemberDate(LocalDate.of(2019,11,30));
+        jsonObject = mapper.writeValueAsString(level);
+        when(repo.getOne(1)).thenReturn(level);
+        mockMvc.perform(MockMvcRequestBuilders.get("/level/customerId/{customerId}",100 ).accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonObject));
+    }
 
 
 

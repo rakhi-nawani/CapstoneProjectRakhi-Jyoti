@@ -1,11 +1,14 @@
 package com.trilogyed.invoicecrudservice.controller;
 
 import com.trilogyed.invoicecrudservice.dao.InvoiceRepository;
+import com.trilogyed.invoicecrudservice.dao.ItemRepository;
 import com.trilogyed.invoicecrudservice.dto.Invoice;
+import com.trilogyed.invoicecrudservice.dto.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,6 +16,9 @@ public class InvoiceController {
 
     @Autowired
     InvoiceRepository repo;
+
+    @Autowired
+    ItemRepository itemRepo;
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -24,6 +30,14 @@ public class InvoiceController {
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Invoice addInvoice(@RequestBody Invoice invoice) {
+        List<Item> tempItemList = new ArrayList<>(invoice.getItems());
+        invoice.setItems(new ArrayList<Item>());
+        repo.save(invoice);
+        tempItemList.stream().forEach(item ->{
+            item.setInvoiceId(invoice.getInvoiceId());
+            itemRepo.save(item);
+        });
+        invoice.setItems(tempItemList);
         return repo.save(invoice);
     }
 
@@ -45,5 +59,12 @@ public class InvoiceController {
         repo.delete(invoice);
     }
 
+
+    // Custom Method
+    @RequestMapping(value = "/invoice/customerId/{customerId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Invoice> findInvoiceByCustomerId(@PathVariable int customerId) {
+        return repo.findInvoiceByCustomerId(customerId);
+    }
 
 }
