@@ -1,4 +1,4 @@
-package com.trilogyed.AdminAPIService.frign;
+package com.trilogyed.AdminAPIService.feign;
 
 import com.trilogyed.AdminAPIService.model.Product;
 import org.springframework.cloud.openfeign.FeignClient;

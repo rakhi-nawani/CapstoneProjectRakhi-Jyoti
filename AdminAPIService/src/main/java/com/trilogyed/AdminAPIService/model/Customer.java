@@ -1,18 +1,12 @@
 package com.trilogyed.AdminAPIService.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Proxy;
 
-import javax.persistence.*;
+
 import java.util.Objects;
 
-@Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Proxy(lazy = false)
-@Table(name = "customer")
+
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int customer_id ;
     private String first_name ;
     private String last_name ;

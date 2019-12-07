@@ -1,27 +1,19 @@
 package com.trilogyed.AdminAPIService.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import org.hibernate.annotations.Proxy;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 
-@Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Proxy(lazy = false)
-@Table(name = "invoice")
+
 public class Invoice {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int invoiceId ;
     private int customerId;
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -29,7 +21,6 @@ public class Invoice {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd")
     private LocalDate purchaseDate;
 
-    @OneToMany(mappedBy = "invoiceId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Item> Items;
 
     public List<Item> getItems() {
