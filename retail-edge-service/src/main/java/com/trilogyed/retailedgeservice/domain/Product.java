@@ -1,8 +1,7 @@
 package com.trilogyed.retailedgeservice.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -61,7 +60,7 @@ public class Product {
         this.product_description = product_description;
     }
 
-    public double getList_price() {
+    public BigDecimal getList_price() {
         return list_price;
     }
 

@@ -22,6 +22,8 @@ public class CustomerInvoice {
     private List<Item> Items;
     private int points;
 
+
+
     public int getInvoiceId() {
         return invoiceId;
     }
