@@ -121,9 +121,14 @@ public class ServiceLayer {
         customerInvoice.setCustomerId(invoice.getCustomerId());
         customerInvoice.setItems(invoice.getItems());
         customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
-        customerInvoice.setItems(invoice.getItems());
         customerInvoice.setPoints(serviceLayer.calcualtePoints());
         return customerInvoice;
     }
 
+    public Object getAllInvoice() {
+
+        List<Invoice> InvoiceList = invoiceClient.getAllInvoices();
+        return InvoiceList ;
+
     }
+}
