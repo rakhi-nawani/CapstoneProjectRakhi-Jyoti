@@ -1,7 +1,6 @@
 package com.trilogyed.retailedgeservice.domain;
 
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -60,7 +59,7 @@ public class Product {
         this.product_description = product_description;
     }
 
-    public BigDecimal getList_price() {
+    public double getList_price() {
         return list_price;
     }
 

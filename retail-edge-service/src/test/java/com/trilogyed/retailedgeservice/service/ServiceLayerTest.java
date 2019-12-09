@@ -81,13 +81,18 @@ public class ServiceLayerTest {
         Invoice invoice = new Invoice();
         invoice.setInvoiceId(1);
         invoice.setCustomerId(100);
+        Item item = new Item(1,1, 214, 1, new BigDecimal(52.99));
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(item);
         invoice.setPurchaseDate(LocalDate.of(2019,11,30));
-
-        List<Invoice> invoiceList = new ArrayList<>();
-        invoiceList.add(invoice);
+        invoice.setItems(itemList);
+        CustomerInvoice ci = new CustomerInvoice();
+        ci.setCustomerId(100);
+        ci.setItems(itemList);
+        ci.setPurchaseDate(LocalDate.of(2019,11,30));
+        ci.setPoints(50);
 
         doReturn(invoice).when(invoiceClient).getInvoice(1);
-        doReturn(invoiceList).when(invoiceClient).getAllInvoices();
         doReturn(invoice).when(invoiceClient).addInvoice(invoice);
         doReturn(invoice).when(invoiceClient).updateInvoice(invoice);
         doNothing().when(invoiceClient).deleteInvoice(invoice);
@@ -124,17 +129,15 @@ public class ServiceLayerTest {
         CustomerInvoice ci = new CustomerInvoice();
         ci.setCustomerId(100);
         ci.setItems(itemList);
-        ci.setPurchaseDate(LocalDate.of(2019,11,30));
-        ci.setPoints(50);
+        ci.setPurchaseDate(LocalDate.of(2019,11,   30));
+        ci.setPoints(0);
         CustomerInvoice invoiceIExpect = service.getInvoicebyId(1);
-
         assertEquals(invoiceIExpect, ci);
 
     }
 
     @Test
-    public void getInvoicebyCustomerIdId() {
-
+    public void getInvoicebyInvoiveId() {
         Invoice invoice = new Invoice();
         invoice.setInvoiceId(1);
         invoice.setCustomerId(100);
@@ -148,11 +151,8 @@ public class ServiceLayerTest {
         ci.setItems(itemList);
         ci.setPurchaseDate(LocalDate.of(2019,11,30));
         ci.setPoints(50);
-        CustomerInvoice invoiceIExpect = (CustomerInvoice) service.getInvoicebyCustomerIdId(100);
-
+        CustomerInvoice invoiceIExpect = (CustomerInvoice) service.getAllInvoice();
         assertEquals(invoiceIExpect, ci);
-
-
     }
 
     @Test
@@ -162,7 +162,6 @@ public class ServiceLayerTest {
         invoice.setCustomerId(100);
         invoice.setPurchaseDate(LocalDate.of(2019,11,30));
         service.deleteInvoice(invoice);
-
         assertNull( invoice);
     }
 
@@ -180,9 +179,8 @@ public class ServiceLayerTest {
             ci.setCustomerId(100);
             ci.setItems(itemList);
             ci.setPurchaseDate(LocalDate.of(2019,11,30));
-            ci.setPoints(50);
+            ci.setPoints(0);
             CustomerInvoice invoiceIExpect = invoiceIExpect = service.updateInvoice(invoice);
-
             assertEquals(invoiceIExpect, invoice);
 
         }
@@ -206,19 +204,17 @@ public class ServiceLayerTest {
         ci.setCustomerId(100);
         ci.setItems(itemList);
         ci.setPurchaseDate(LocalDate.of(2019,11,30));
-        ci.setPoints(50);
-        CustomerInvoice invoiceIExpect = invoiceIExpect = service.purchaceProduct(4, 100, 12);
+        CustomerInvoice invoiceIExpect = service.purchaceProduct(4, 100, 12);
 
         assertEquals(invoiceIExpect, invoice);
-
     }
 
     @Test
     public void calcualtePoints() {
-        int LevelUpoints = 10;
+        int LevelUpoints = 40;
         double orderTotal = 50;
         int customerId = 201;
-        int pointsIGot = service.calcualtePoints(201, BigDecimal.valueOf(50) );
+        int pointsIGot = service.calcualtePoints(201, BigDecimal.valueOf(200) );
         assertEquals(LevelUpoints, pointsIGot);
     }
 
@@ -258,9 +254,9 @@ public class ServiceLayerTest {
         ci.setItems(itemList);
         ci.setPurchaseDate(LocalDate.of(2019,11,30));
         ci.setPoints(50);
-        CustomerInvoice invoiceIExpect = invoiceIExpect = service.submitInvoice(invoice);
+        CustomerInvoice invoiceIExpect = service.submitInvoice(invoice);
 
-        assertEquals(invoiceIExpect, invoice);
+        assertEquals(invoiceIExpect, ci);
     }
 
     @Test
@@ -279,11 +275,10 @@ public class ServiceLayerTest {
         ci.setItems(itemList);
         ci.setPurchaseDate(LocalDate.of(2019,11,30));
         ci.setPoints(50);
-        CustomerInvoice invoiceIExpect = invoiceIExpect = service.addViewModel(invoice);
+        CustomerInvoice invoiceIExpect = service.addViewModel(invoice);
 
         assertEquals(invoiceIExpect, invoice);
 
     }
 
     }
-}

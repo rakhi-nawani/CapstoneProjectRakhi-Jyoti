@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/invoice-crud-service/invoice-crud-service.iml" filepath="$PROJECT_DIR$/invoice-crud-service/invoice-crud-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/level-up-crud-service/level-up-crud-service.iml" filepath="$PROJECT_DIR$/level-up-crud-service/level-up-crud-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/levelup-points-queue-consumer/levelup-points-queue-consumer.iml" filepath="$PROJECT_DIR$/levelup-points-queue-consumer/levelup-points-queue-consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/retail-edge-service/retail-edge-service.iml" filepath="$PROJECT_DIR$/retail-edge-service/retail-edge-service.iml" />
     </modules>
   </component>

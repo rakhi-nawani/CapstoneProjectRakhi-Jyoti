@@ -1,15 +1,14 @@
 package com.trilogyed.retailedgeservice.controller;
 
-import com.trilogyed.retailedgeservice.domain.Invoice;
-import com.trilogyed.retailedgeservice.domain.Item;
-import com.trilogyed.retailedgeservice.domain.Level;
-import com.trilogyed.retailedgeservice.domain.Product;
+import com.trilogyed.retailedgeservice.domain.*;
 import com.trilogyed.retailedgeservice.feign.CustomerServiceFeignClient;
 import com.trilogyed.retailedgeservice.feign.InvoiceClient;
 import com.trilogyed.retailedgeservice.feign.LevelUpClient;
 import com.trilogyed.retailedgeservice.feign.ProductServiceFeignClient;
 import com.trilogyed.retailedgeservice.model.CustomerInvoice;
 import com.trilogyed.retailedgeservice.service.ServiceLayer;
+import com.trilogyed.retailedgeservice.util.messages.LevelUpPointsEntry;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,23 @@ import java.util.List;
 
 @RestController
 public class RetailController {
+
+    public static final String EXCHANGE = "queue-demo-exchange";
+    public static final String ROUTING_KEY = "levelup.points.add.account.controller";
+
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    public RetailController(RabbitTemplate rabbitTemplate, ServiceLayer service, LevelUpClient levelUpClient, InvoiceClient invoiceClient, ProductServiceFeignClient productServiceFeignClient, CustomerServiceFeignClient customerServiceFeignClient) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.service = service;
+        this.levelUpClient = levelUpClient;
+        this.invoiceClient = invoiceClient;
+        this.productServiceFeignClient = productServiceFeignClient;
+        this.customerServiceFeignClient = customerServiceFeignClient;
+    }
+
 
     @Autowired
     private final ServiceLayer service;
@@ -40,6 +56,21 @@ public class RetailController {
         this.productServiceFeignClient = productServiceFeignClient;
         this.customerServiceFeignClient = customerServiceFeignClient;
     }
+
+
+    @RequestMapping(value = "/levelup", method = RequestMethod.POST)
+    public String createAccount(@RequestBody Level level) {
+        // create message to send to email list creation queue
+        LevelUpPointsEntry msg = new LevelUpPointsEntry(level.getLevelUpId(), level.getCustomerId(), level.getPoints());
+        System.out.println("Sending message...");
+        rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, msg);
+        System.out.println("Points Sumbitted");
+
+        // Now do account creation stuff...
+
+        return "LevelUp Points added";
+    }
+
 
     @RequestMapping(value = "/purchase", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -71,13 +102,6 @@ public class RetailController {
         return invoiceClient.findInvoiceByCustomerId(customerId);
     }
 
-    @RequestMapping(value = "/invoice/customerId/{customerId}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public List<CustomerInvoice> findInvoiceByCustomerId(@PathVariable int customerId) {
-        return service.getInvoicebyCustomerIdId(customerId);
-    }
-
-
     @RequestMapping(value = "/products/inventory", method = RequestMethod.GET)
     public List<Product> getProductsInInventory() {
         return service.searchInventory();
@@ -86,7 +110,14 @@ public class RetailController {
     @GetMapping ("/products/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product getProductById (@PathVariable Integer id) {
-        return productServiceFeignClient.getProductById(id);
+        return service.getProductByProductId(id);
+
+    }
+
+    @GetMapping ("/customer/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Customer getcustomerById (@PathVariable Integer customerId) {
+        return service.findCustomer(customerId);
 
     }
 

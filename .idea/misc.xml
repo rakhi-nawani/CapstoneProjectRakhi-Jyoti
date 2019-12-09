@@ -12,8 +12,9 @@
         <option value="$PROJECT_DIR$/retail-edge-service/pom.xml" />
         <option value="$PROJECT_DIR$/AdminAPIService/pom.xml" />
         <option value="$PROJECT_DIR$/circuit-breaker-reading/pom.xml" />
+        <option value="$PROJECT_DIR$/levelup-points-queue-consumer/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="1.8.0_112" project-jdk-type="JavaSDK" />
 </project>

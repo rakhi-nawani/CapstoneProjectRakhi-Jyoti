@@ -1,7 +1,5 @@
 package com.trilogyed.retailedgeservice.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -68,8 +66,8 @@ public class Item {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = BigDecimal.valueOf(unitPrice);
     }
 
     @Override

@@ -12,6 +12,7 @@
         <module name="config-server" />
         <module name="circuit-breaker-reading" />
         <module name="invoice-crud-service" />
+        <module name="levelup-points-queue-consumer" />
         <module name="ProductService" />
         <module name="AdminAPIService" />
         <module name="Service-Registry" />
@@ -24,6 +25,7 @@
       <module name="CustomerService" target="1.8" />
       <module name="invoice-crud-service" target="1.8" />
       <module name="level-up-crud-service" target="1.8" />
+      <module name="levelup-points-queue-consumer" target="1.8" />
       <module name="ProductService" target="1.8" />
       <module name="retail-edge-service" target="1.8" />
       <module name="Service-Registry" target="1.8" />
@@ -39,6 +41,7 @@
       <module name="config-server" options="-parameters" />
       <module name="invoice-crud-service" options="-parameters" />
       <module name="level-up-crud-service" options="-parameters" />
+      <module name="levelup-points-queue-consumer" options="-parameters" />
       <module name="retail-edge-service" options="-parameters" />
     </option>
   </component>
