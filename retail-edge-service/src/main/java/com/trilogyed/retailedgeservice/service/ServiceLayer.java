@@ -46,14 +46,13 @@ public class ServiceLayer {
     public List<CustomerInvoice> getInvoicebyCustomerIdId(int customerId) {
         List<CustomerInvoice> customerInvoices = new ArrayList<>();
         List<Invoice> invoices = invoiceClient.findInvoiceByCustomerId(customerId);
-        for (Invoice invoice = invoices) {
+        for (Invoice invoice : invoices){
             if (invoice == null) {
                 throw new IllegalArgumentException("This Customer is not available in Database");
             }
             customerInvoices.add(addViewModel(invoice));
-
-            return customerInvoices;
         }
+        return customerInvoices;
     }
 
     public void deleteInvoice(Invoice invoice){
@@ -106,32 +105,35 @@ public class ServiceLayer {
 
     //Helper methods
     public int calcualtePoints(int customerId, BigDecimal orderTotal){
-      int levelUpPoints= 0;
-<<<<<<< HEAD
-      Level levelup = new Level();
+
       int levelPoints = levelUpClient.findLevelPointsByCustomerId(customerId);
-      if(levelPoints< 50) {
-          levelup.setCustomerId(customerId);
-          levelup.setMemberDate(LocalDate.now());
-          levelup.setPoints(0);
-      } if (orderTotal.compareTo(BigDecimal.valueOf(50)) == 1){
-          int newPoints = orderTotal.intValue()/50;
-          levelup.setPoints(levelup.getPoints()+ (10*50));
+        int multipleOf50;
+
+        if(orderTotal.compareTo(BigDecimal.valueOf(50)) == -1) {
+            levelPoints =  levelPoints + 0;
+        } else if(orderTotal.compareTo(BigDecimal.valueOf(50)) == 0){
+            levelPoints =  levelPoints + 10;
+        }else if(orderTotal.compareTo(BigDecimal.valueOf(50)) == 1){
+            multipleOf50 = orderTotal . intValue()/50;
+
+            levelPoints = levelPoints  + 10*multipleOf50;
+
         }
 
-=======
-      if(orderTotal.compareTo(BigDecimal.valueOf(50)) == -1) {
-          levelUpPoints = 0;
-      } else if ( orderTotal.compareTo(BigDecimal.valueOf(50)) == 0 && orderTotal.compareTo(BigDecimal.valueOf(50)) == 1)
-            {
-                levelUpPoints = 10;
-            }
-      else  if(orderTotal.compareTo(orderTotal.add(BigDecimal.valueOf(50))) == 1);{
-           levelUpPoints = levelUpPoints+10;
-           }
->>>>>>> d1d609c8af70355b0e61999b865e04305779ec10
-           return levelUpPoints;
-      }
+        return levelPoints;
+    }
+
+//      if(levelPoints< 50) {
+//          levelup.setCustomerId(customerId);
+//          levelup.setMemberDate(LocalDate.now());
+//          levelup.setPoints(0);
+//      } if (orderTotal.compareTo(BigDecimal.valueOf(50)) == 1){
+//          int newPoints = orderTotal.intValue()/50;
+//          levelup.setPoints(levelup.getPoints()+ (10*50));
+//        }
+
+
+
 
 
     public List<Item> getProductsbyInvoiceId(int invoiceId){
