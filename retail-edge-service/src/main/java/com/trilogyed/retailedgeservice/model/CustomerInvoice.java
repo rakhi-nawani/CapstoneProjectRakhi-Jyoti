@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.trilogyed.retailedgeservice.domain.Item;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +22,15 @@ public class CustomerInvoice {
     private LocalDate purchaseDate;
     private List<Item> Items;
     private int points;
+    private BigDecimal orderTotal;
 
+    public BigDecimal getOrderTotal() {
+        return orderTotal;
+    }
 
+    public void setOrderTotal(BigDecimal orderTotal) {
+        this.orderTotal = orderTotal;
+    }
 
     public int getInvoiceId() {
         return invoiceId;
@@ -73,22 +81,25 @@ public class CustomerInvoice {
                 customerId == that.customerId &&
                 points == that.points &&
                 Objects.equals(purchaseDate, that.purchaseDate) &&
-                Objects.equals(Items, that.Items);
+                Objects.equals(Items, that.Items) &&
+                Objects.equals(orderTotal, that.orderTotal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceId, customerId, purchaseDate, Items, points);
+        return Objects.hash(invoiceId, customerId, purchaseDate, Items, points, orderTotal);
     }
 
     @Override
     public String toString() {
-        return "InvoiceViewModel{" +
+        return "CustomerInvoice{" +
                 "invoiceId=" + invoiceId +
                 ", customerId=" + customerId +
                 ", purchaseDate=" + purchaseDate +
                 ", Items=" + Items +
-                ", levelPoints=" + points +
+                ", points=" + points +
+                ", orderTotal=" + orderTotal +
                 '}';
     }
 }
+

@@ -65,22 +65,23 @@ public class RetailController {
         return invoiceClient.getAllInvoices();
     }
 
-//    @RequestMapping(value = "/invoice/customerId/{customerId}", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Invoice> getInvoicesByCustomerId(@PathVariable int customerId) {
-//        return invoiceClient.findInvoiceByCustomerId(customerId);
-//    }
+    @RequestMapping(value = "/invoice/customerId/{customerId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Invoice> getInvoicesByCustomerId(@PathVariable int customerId) {
+        return invoiceClient.findInvoiceByCustomerId(customerId);
+    }
 
     @RequestMapping(value = "/invoice/customerId/{customerId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<CustomerInvoice> findInvoiceByCustomerId(@PathVariable int customerId) {
         return service.getInvoicebyCustomerIdId(customerId);
     }
-//    //Jyotis work
-//    @RequestMapping(value = "/products/inventory", method = RequestMethod.GET)
-//    public List<Product> getProductsInInventory() {
-//        return null;
-//    }
+
+
+    @RequestMapping(value = "/products/inventory", method = RequestMethod.GET)
+    public List<Product> getProductsInInventory() {
+        return service.searchInventory();
+    }
 
     @GetMapping ("/products/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -1,9 +1,6 @@
 package com.trilogyed.retailedgeservice.service;
 
-import com.trilogyed.retailedgeservice.domain.Invoice;
-import com.trilogyed.retailedgeservice.domain.Item;
-import com.trilogyed.retailedgeservice.domain.Level;
-import com.trilogyed.retailedgeservice.domain.Product;
+import com.trilogyed.retailedgeservice.domain.*;
 import com.trilogyed.retailedgeservice.feign.CustomerServiceFeignClient;
 import com.trilogyed.retailedgeservice.feign.InvoiceClient;
 import com.trilogyed.retailedgeservice.feign.LevelUpClient;
@@ -46,9 +43,17 @@ public class ServiceLayer {
        return addViewModel(invoiceClient.getInvoice(invoiceId));
     }
 
-    public List<CustomerInvoice> getInvoicebyCustomerIdId(int customerId){
+    public List<CustomerInvoice> getInvoicebyCustomerIdId(int customerId) {
+        List<CustomerInvoice> customerInvoices = new ArrayList<>();
+        List<Invoice> invoices = invoiceClient.findInvoiceByCustomerId(customerId);
+        for (Invoice invoice = invoices) {
+            if (invoice == null) {
+                throw new IllegalArgumentException("This Customer is not available in Database");
+            }
+            customerInvoices.add(addViewModel(invoice));
 
-        return null;
+            return customerInvoices;
+        }
     }
 
     public void deleteInvoice(Invoice invoice){
@@ -61,10 +66,21 @@ public class ServiceLayer {
         return addViewModel(invoiceClient.updateInvoice(invoice));
     }
 
+    public Customer findCustomer(int id) {
+        Customer customer = customerServiceFeignClient.getCustomerById(id);
+        if(customer == null){
+            throw new IllegalArgumentException("This Customer is not available in Database");
+        }
+        return customer;
+    }
+
     public int getLevelupPointsbyCustomerId(int customerId){
      return levelUpClient.findLevelPointsByCustomerId(customerId);
     }
 
+    public List<Product> searchInventory(){
+        return productServiceFeignClient.getAllProducts();
+    }
 
     public CustomerInvoice purchaceProduct(int quantity, int customerId, int productId){
         Invoice invoice = new Invoice();
@@ -82,25 +98,26 @@ public class ServiceLayer {
         customerInvoice.setCustomerId(customerId);
         customerInvoice.setItems(itemList);
         customerInvoice.setPurchaseDate(LocalDate.now());
-        orderTotal =item.getUnitPrice().multiply(BigDecimal.valueOf(quantity));
-        customerInvoice.setPoints(serviceLayer.calcualtePoints());
-
+        customerInvoice.setOrderTotal(serviceLayer.orderTotal);
+        customerInvoice.setPoints(serviceLayer.calcualtePoints(customerId, serviceLayer.orderTotal));
         return customerInvoice;
     }
 
 
     //Helper methods
-    public int calcualtePoints(){
+    public int calcualtePoints(int customerId, BigDecimal orderTotal){
       int levelUpPoints= 0;
-      if(orderTotal.compareTo(BigDecimal.valueOf(50)) == -1) {
-          levelUpPoints = 0;
-      } else if ( orderTotal.compareTo(BigDecimal.valueOf(50)) == 0 && orderTotal.compareTo(BigDecimal.valueOf(50)) == -1)
-            {
-                levelUpPoints = 10;
-            }
-      else  if(orderTotal.compareTo(orderTotal.add(BigDecimal.valueOf(50))) == 1);{
-           levelUpPoints = levelUpPoints+10;
-           }
+      Level levelup = new Level();
+      int levelPoints = levelUpClient.findLevelPointsByCustomerId(customerId);
+      if(levelPoints< 50) {
+          levelup.setCustomerId(customerId);
+          levelup.setMemberDate(LocalDate.now());
+          levelup.setPoints(0);
+      } if (orderTotal.compareTo(BigDecimal.valueOf(50)) == 1){
+          int newPoints = orderTotal.intValue()/50;
+          levelup.setPoints(levelup.getPoints()+ (10*50));
+        }
+
            return levelUpPoints;
       }
 
@@ -115,13 +132,20 @@ public class ServiceLayer {
        return addViewModel(invoiceClient.addInvoice(invoice));
     }
 
+    private BigDecimal orderTotal(List<Item> itemList) {
+        BigDecimal orderTotal = new BigDecimal("0");
+        itemList.stream().forEach(invoiceItems -> {
+            orderTotal.add(invoiceItems.getUnitPrice().multiply(new BigDecimal(invoiceItems.getQuantity())));
+        });
+        return orderTotal;
+    }
 
     public CustomerInvoice addViewModel(Invoice invoice){
         CustomerInvoice customerInvoice = new CustomerInvoice();
         customerInvoice.setCustomerId(invoice.getCustomerId());
         customerInvoice.setItems(invoice.getItems());
         customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
-        customerInvoice.setPoints(serviceLayer.calcualtePoints());
+       // customerInvoice.setPoints(serviceLayer.calcualtePoints(invoice.getCustomerId(), serviceLayer.orderTotal()));
         return customerInvoice;
     }
 
