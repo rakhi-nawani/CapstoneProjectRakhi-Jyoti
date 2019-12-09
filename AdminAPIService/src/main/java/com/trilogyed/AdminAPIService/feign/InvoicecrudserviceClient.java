@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "invoicecrudservice")
+@FeignClient(name = "invoice-service")
 public interface InvoicecrudserviceClient {
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)

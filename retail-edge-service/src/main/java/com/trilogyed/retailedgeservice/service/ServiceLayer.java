@@ -107,6 +107,7 @@ public class ServiceLayer {
     //Helper methods
     public int calcualtePoints(int customerId, BigDecimal orderTotal){
       int levelUpPoints= 0;
+<<<<<<< HEAD
       Level levelup = new Level();
       int levelPoints = levelUpClient.findLevelPointsByCustomerId(customerId);
       if(levelPoints< 50) {
@@ -118,6 +119,17 @@ public class ServiceLayer {
           levelup.setPoints(levelup.getPoints()+ (10*50));
         }
 
+=======
+      if(orderTotal.compareTo(BigDecimal.valueOf(50)) == -1) {
+          levelUpPoints = 0;
+      } else if ( orderTotal.compareTo(BigDecimal.valueOf(50)) == 0 && orderTotal.compareTo(BigDecimal.valueOf(50)) == 1)
+            {
+                levelUpPoints = 10;
+            }
+      else  if(orderTotal.compareTo(orderTotal.add(BigDecimal.valueOf(50))) == 1);{
+           levelUpPoints = levelUpPoints+10;
+           }
+>>>>>>> d1d609c8af70355b0e61999b865e04305779ec10
            return levelUpPoints;
       }
 

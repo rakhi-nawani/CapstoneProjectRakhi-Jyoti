@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "levelupcrudservice")
+@FeignClient(name = "level-up-service")
 public interface LevelupcrudserviceClient {
     @RequestMapping(value = "/levels", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

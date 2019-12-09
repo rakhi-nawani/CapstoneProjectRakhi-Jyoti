@@ -8,13 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="retail-edge-service" />
         <module name="level-up-crud-service" />
+        <module name="CustomerService" />
         <module name="config-server" />
-        <module name="AdminAPIService" />
+        <module name="circuit-breaker-reading" />
         <module name="invoice-crud-service" />
         <module name="ProductService" />
-        <module name="CustomerService" />
+        <module name="AdminAPIService" />
         <module name="Service-Registry" />
-        <module name="circuit-breaker-reading" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
