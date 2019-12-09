@@ -217,7 +217,8 @@ public class ServiceLayerTest {
     public void calcualtePoints() {
         int LevelUpoints = 10;
         double orderTotal = 50;
-        int pointsIGot = service.calcualtePoints();
+        int customerId = 201;
+        int pointsIGot = service.calcualtePoints(201, BigDecimal.valueOf(50) );
         assertEquals(LevelUpoints, pointsIGot);
     }
 
