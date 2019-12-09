@@ -94,7 +94,7 @@ public class ServiceLayer {
       int levelUpPoints= 0;
       if(orderTotal.compareTo(BigDecimal.valueOf(50)) == -1) {
           levelUpPoints = 0;
-      } else if ( orderTotal.compareTo(BigDecimal.valueOf(50)) == 0 && orderTotal.compareTo(BigDecimal.valueOf(50)) == -1)
+      } else if ( orderTotal.compareTo(BigDecimal.valueOf(50)) == 0 && orderTotal.compareTo(BigDecimal.valueOf(50)) == 1)
             {
                 levelUpPoints = 10;
             }
