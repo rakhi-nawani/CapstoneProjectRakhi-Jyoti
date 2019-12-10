@@ -39,7 +39,8 @@ public class LevelUpController {
         return repo.getOne(id);
     }
 
-    @CacheEvict(key = "#rsvp.getId()")
+
+      @CacheEvict(key = "#rsvp.getId()")
     @RequestMapping(value = "/level", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public Level updateLevel( @RequestBody Level level) {
