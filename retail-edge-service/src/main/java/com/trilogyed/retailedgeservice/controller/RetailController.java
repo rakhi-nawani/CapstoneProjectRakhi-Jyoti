@@ -74,8 +74,8 @@ public class RetailController {
 
     @RequestMapping(value = "/purchase", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerInvoice purchaseProduct(@RequestBody int quantity, @RequestBody int customerId, @RequestBody int productId) {
-        return service.purchaceProduct(quantity, customerId, productId);
+    public CustomerInvoice purchaseProduct(@RequestBody Order order) {
+        return service.purchaceProduct(order);
     }
 
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)

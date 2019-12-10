@@ -39,9 +39,9 @@ public class ServiceLayer {
         customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
         customerInvoice.setCustomerId(invoice.getCustomerId());
         customerInvoice.setItems(invoice.getItems());
-       // BigDecimal OT = serviceLayer.orderTotal(invoice.getItems());
-       // customerInvoice.setOrderTotal(OT);
-       // customerInvoice.setPoints(serviceLayer.calcualtePoints(invoice.getCustomerId(),new BigDecimal(50)));
+//        BigDecimal OT = serviceLayer.orderTotal(invoice.getItems());
+//        customerInvoice.setOrderTotal(OT);
+//        customerInvoice.setPoints(serviceLayer.calcualtePoints(invoice.getCustomerId(),new BigDecimal(50)));
         return customerInvoice;
     }
 //    public List<CustomerInvoice> getInvoicebyCustomerIdId(int customerId)
@@ -83,26 +83,26 @@ public class ServiceLayer {
         return productServiceFeignClient.getProductById(productId);
     }
 
-    @HystrixCommand(fallbackMethod = "circuitBreakerMethod")
-    public CustomerInvoice purchaceProduct(int quantity, int customerId, int productId){
+//    @HystrixCommand(fallbackMethod = "circuitBreakerMethod")
+    public CustomerInvoice purchaceProduct(Order order){
         Invoice invoice = new Invoice();
-        invoice.setCustomerId(customerId);
+        invoice.setCustomerId(order.getCustomerId());
         invoice.setPurchaseDate(LocalDate.now());
         invoiceClient.addInvoice(invoice);
         Item item = new Item();
         item.setInvoiceId(invoice.getInvoiceId());
-        item.setProductId(productId);
-        item.setQuantity(quantity);
-        double unitPrice = serviceLayer.getProductByProductId(productId).getList_price();
-        item.setUnitPrice(unitPrice);
+        item.setProductId(order.getProductId());
+        item.setQuantity(order.getQuantity());
+
+//        item.setUnitPrice(serviceLayer.getProductByProductId(order.getProductId()).getList_price());
         List<Item> itemList = new ArrayList<>();
         itemList.add(item);
         CustomerInvoice customerInvoice = new CustomerInvoice();
-        customerInvoice.setCustomerId(customerId);
+        customerInvoice.setCustomerId(order.getCustomerId());
         customerInvoice.setItems(itemList);
         customerInvoice.setPurchaseDate(LocalDate.now());
-        customerInvoice.setOrderTotal(serviceLayer.orderTotal);
-        customerInvoice.setPoints(serviceLayer.calcualtePoints(customerId, serviceLayer.orderTotal));
+//        customerInvoice.setOrderTotal(serviceLayer.orderTotal);
+//        customerInvoice.setPoints(serviceLayer.calcualtePoints(order.getCustomerId(), serviceLayer.orderTotal));
         return customerInvoice;
     }
     //Helper methods
@@ -169,4 +169,6 @@ public class ServiceLayer {
         List<Invoice> InvoiceList = invoiceClient.getAllInvoices();
         return InvoiceList ;
     }
+
+
 }
