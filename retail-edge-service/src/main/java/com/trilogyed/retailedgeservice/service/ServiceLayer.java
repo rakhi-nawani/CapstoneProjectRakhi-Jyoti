@@ -134,7 +134,7 @@ public class ServiceLayer {
         customerInvoice.setCustomerId(invoice.getCustomerId());
         customerInvoice.setItems(invoice.getItems());
         customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
-        int points = serviceLayer.calcualtePoints()
+        int points = serviceLayer.calcualtePoints(invoice.getCustomerId(), serviceLayer.orderTotal(invoice.getItems()));
         customerInvoice.setPoints(points);
         return customerInvoice;
     }

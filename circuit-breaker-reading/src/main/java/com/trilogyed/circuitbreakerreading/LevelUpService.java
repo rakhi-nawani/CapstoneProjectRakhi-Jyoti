@@ -18,7 +18,7 @@ public class LevelUpService {
 
     @HystrixCommand(fallbackMethod = "reliable")
     public String readingList() {
-        URI uri = URI.create("http://localhost:7001");
+        URI uri = URI.create("http://localhost:7001/");
 
         return this.restTemplate.getForObject(uri, String.class);
     }
