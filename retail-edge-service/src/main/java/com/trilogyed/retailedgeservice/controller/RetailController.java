@@ -21,18 +21,23 @@ public class RetailController {
     public static final String EXCHANGE = "queue-demo-exchange";
     public static final String ROUTING_KEY = "levelup.points.add.account.controller";
 
-//
-//    @Autowired
-//    private RabbitTemplate rabbitTemplate;
 
-//    public RetailController(RabbitTemplate rabbitTemplate, ServiceLayer service, LevelUpClient levelUpClient, InvoiceClient invoiceClient, ProductServiceFeignClient productServiceFeignClient, CustomerServiceFeignClient customerServiceFeignClient) {
-//        this.rabbitTemplate = rabbitTemplate;
-//        this.service = service;
-//        this.levelUpClient = levelUpClient;
-//        this.invoiceClient = invoiceClient;
-//        this.productServiceFeignClient = productServiceFeignClient;
-//        this.customerServiceFeignClient = customerServiceFeignClient;
+
+    private RabbitTemplate rabbitTemplate;
+
+//    public RetailController() {
 //    }
+
+    @Autowired
+    public RetailController(RabbitTemplate rabbitTemplate, ServiceLayer service, LevelUpClient levelUpClient, InvoiceClient invoiceClient, ProductServiceFeignClient productServiceFeignClient, CustomerServiceFeignClient customerServiceFeignClient) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.service = service;
+        this.levelUpClient = levelUpClient;
+        this.invoiceClient = invoiceClient;
+        this.productServiceFeignClient = productServiceFeignClient;
+        this.customerServiceFeignClient = customerServiceFeignClient;
+    }
+
 
 
     @Autowired
@@ -56,19 +61,16 @@ public class RetailController {
         this.customerServiceFeignClient = customerServiceFeignClient;
     }
 
-//
-//    @RequestMapping(value = "/levelup", method = RequestMethod.POST)
-//    public String createAccount(@RequestBody Level level) {
-//        // create message to send to email list creation queue
-//        LevelUpPointsEntry msg = new LevelUpPointsEntry(level.getLevelUpId(), level.getCustomerId(), level.getPoints());
-//        System.out.println("Sending message...");
-//        rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, msg);
-//        System.out.println("Points Sumbitted");
 
-    // Now do account creation stuff...
-
-//        return "LevelUp Points added";
-
+    @RequestMapping(value = "/level", method = RequestMethod.POST)
+    public String addLlevel(@RequestBody Level level) {
+        // create message to send to email list creation queue
+        LevelUpPointsEntry msg = new LevelUpPointsEntry(level.getLevelUpId(), level.getCustomerId(), level.getPoints());
+        System.out.println("Sending message...");
+        rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, msg);
+        System.out.println("Points Sumbitted");
+        return "LevelUp Points added";
+    }
 
     @RequestMapping(value = "/purchase", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
