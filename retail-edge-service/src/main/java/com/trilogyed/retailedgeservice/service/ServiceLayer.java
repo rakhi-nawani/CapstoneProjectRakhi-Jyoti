@@ -1,4 +1,5 @@
 package com.trilogyed.retailedgeservice.service;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.trilogyed.retailedgeservice.domain.*;
 import com.trilogyed.retailedgeservice.feign.CustomerServiceFeignClient;
 import com.trilogyed.retailedgeservice.feign.InvoiceClient;
@@ -32,28 +33,39 @@ public class ServiceLayer {
         this.productServiceFeignClient = productServiceFeignClient;
     }
     public CustomerInvoice getInvoicebyId(int invoiceId){
-        return addViewModel(invoiceClient.getInvoice(invoiceId));
+        Invoice invoice = invoiceClient.getInvoice(invoiceId);
+        CustomerInvoice customerInvoice = new CustomerInvoice();
+        customerInvoice.setInvoiceId(invoiceId);
+        customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
+        customerInvoice.setCustomerId(invoice.getCustomerId());
+        customerInvoice.setItems(invoice.getItems());
+       // BigDecimal OT = serviceLayer.orderTotal(invoice.getItems());
+       // customerInvoice.setOrderTotal(OT);
+       // customerInvoice.setPoints(serviceLayer.calcualtePoints(invoice.getCustomerId(),new BigDecimal(50)));
+        return customerInvoice;
     }
-    public List<CustomerInvoice> getInvoicebyCustomerIdId(int customerId) {
-        List<CustomerInvoice> customerInvoices = new ArrayList<>();
-        List<Invoice> invoices = invoiceClient.findInvoiceByCustomerId(customerId);
-        for (Invoice invoice : invoices){
-            if (invoice == null) {
-                throw new IllegalArgumentException("This Customer is not available in Database");
-            }
-            customerInvoices.add(addViewModel(invoice));
-        }
-        return customerInvoices;
-    }
+//    public List<CustomerInvoice> getInvoicebyCustomerIdId(int customerId)
+//        List<CustomerInvoice> customerInvoices = new ArrayList<>();
+//        List<Invoice> invoices = invoiceClient.findInvoiceByCustomerId(customerId);
+//        for (Invoice invoice : invoices){
+//            if (invoice == null) {
+//                throw new IllegalArgumentException("This Customer is not available in Database");
+//            }
+//            customerInvoices.add(addViewModel(invoice));
+//        }
+//        return customerInvoices;
+//    }
 
     public void deleteInvoice(Invoice invoice){
         invoiceClient.deleteInvoice(invoice);
     }
-    @RequestMapping(value = "/invoice", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
-    public CustomerInvoice updateInvoice( @RequestBody Invoice invoice) {
-        return addViewModel(invoiceClient.updateInvoice(invoice));
-    }
+
+//    @RequestMapping(value = "/invoice", method = RequestMethod.PUT)
+//    @ResponseStatus(HttpStatus.OK)
+//
+//    public CustomerInvoice updateInvoice( @RequestBody Invoice invoice) {
+//        return addViewModel(invoiceClient.updateInvoice(invoice));
+//    }
     public Customer findCustomer(int id) {
         Customer customer = customerServiceFeignClient.getCustomerById(id);
         if(customer == null){
@@ -71,6 +83,7 @@ public class ServiceLayer {
         return productServiceFeignClient.getProductById(productId);
     }
 
+    @HystrixCommand(fallbackMethod = "circuitBreakerMethod")
     public CustomerInvoice purchaceProduct(int quantity, int customerId, int productId){
         Invoice invoice = new Invoice();
         invoice.setCustomerId(customerId);
@@ -119,9 +132,20 @@ public class ServiceLayer {
         List<Item> invoiceItemList =  invoiceClient.getInvoice(invoiceId).getItems();
         return invoiceItemList;
     }
-    public CustomerInvoice submitInvoice(Invoice invoice){
-        return addViewModel(invoiceClient.addInvoice(invoice));
+
+
+    public Invoice submitInvoice(Invoice invoice){
+        return invoiceClient.addInvoice(invoice);
     }
+
+//    public CustomerInvoice submitInvoice(Invoice invoice){
+//        return addViewModel(invoiceClient.addInvoice(invoice));
+//    }
+
+    public String circuitBreakerMethod() {
+        return "Circuit Breaker in Action.";
+    }
+
     private BigDecimal orderTotal(List<Item> itemList) {
         BigDecimal orderTotal = new BigDecimal("0");
         itemList.stream().forEach(invoiceItems -> {
@@ -129,15 +153,18 @@ public class ServiceLayer {
         });
         return orderTotal;
     }
-    public CustomerInvoice addViewModel(Invoice invoice){
-        CustomerInvoice customerInvoice = new CustomerInvoice();
-        customerInvoice.setCustomerId(invoice.getCustomerId());
-        customerInvoice.setItems(invoice.getItems());
-        customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
-        int points = serviceLayer.calcualtePoints(invoice.getCustomerId(), serviceLayer.orderTotal(invoice.getItems()));
-        customerInvoice.setPoints(points);
-        return customerInvoice;
-    }
+//    public CustomerInvoice addViewModel(Invoice invoice){
+//        CustomerInvoice customerInvoice = new CustomerInvoice();
+//     //   Invoice savedIncoice = invoiceClient.addInvoice(invoice);
+//        customerInvoice.setInvoiceId(invoice.getInvoiceId());
+//        customerInvoice.setCustomerId(invoice.getCustomerId());
+//        customerInvoice.setPurchaseDate(invoice.getPurchaseDate());
+//        customerInvoice.setItems(invoice.getItems());
+//        int points = serviceLayer.calcualtePoints(invoice.getCustomerId(), serviceLayer.orderTotal(invoice.getItems()));
+//        customerInvoice.setPoints(points);
+//        customerInvoice.setOrderTotal(orderTotal(invoice.getItems()));
+//        return customerInvoice;
+//    }
     public List<Invoice>  getAllInvoice() {
         List<Invoice> InvoiceList = invoiceClient.getAllInvoices();
         return InvoiceList ;

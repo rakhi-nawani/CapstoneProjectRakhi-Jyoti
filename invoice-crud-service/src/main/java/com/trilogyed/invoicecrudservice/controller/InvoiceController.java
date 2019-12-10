@@ -30,15 +30,19 @@ public class InvoiceController {
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Invoice addInvoice(@RequestBody Invoice invoice) {
-        List<Item> tempItemList = new ArrayList<>(invoice.getItems());
-        invoice.setItems(new ArrayList<Item>());
-        repo.save(invoice);
-        tempItemList.stream().forEach(item ->{
-            item.setInvoiceId(invoice.getInvoiceId());
-            itemRepo.save(item);
-        });
-        invoice.setItems(tempItemList);
-        return repo.save(invoice);
+//        List<Item> tempItemList = invoice.getItems();
+//        invoice.setItems(tempItemList);
+//        repo.save(invoice);
+//        tempItemList.stream().forEach(item ->{
+//            item.setInvoiceId(invoice.getInvoiceId());
+//            itemRepo.save(item);
+//        });
+//        invoice.setItems(tempItemList);
+        Invoice outInvoice = new Invoice();
+        outInvoice.setCustomerId(invoice.getCustomerId());
+        outInvoice.setPurchaseDate(invoice.getPurchaseDate());
+        outInvoice.setItems(invoice.getItems());
+        return repo.save(outInvoice);
     }
 
     @RequestMapping(value = "/invoice/id/{id}", method = RequestMethod.GET)

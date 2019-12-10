@@ -74,13 +74,13 @@ public class RetailController {
 
     @RequestMapping(value = "/purchase", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerInvoice purchaseProduct(@RequestBody int quantity, int customerId, int productId) {
+    public CustomerInvoice purchaseProduct(@RequestBody int quantity, @RequestBody int customerId, @RequestBody int productId) {
         return service.purchaceProduct(quantity, customerId, productId);
     }
 
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerInvoice submitInvoice(@RequestBody Invoice invoice) {
+    public Invoice submitInvoice(@RequestBody Invoice invoice) {
         return service.submitInvoice(invoice);
     }
 

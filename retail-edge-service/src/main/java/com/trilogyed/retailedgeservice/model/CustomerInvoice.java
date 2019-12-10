@@ -24,6 +24,24 @@ public class CustomerInvoice {
     private int points;
     private BigDecimal orderTotal;
 
+    public CustomerInvoice() {
+    }
+
+    public CustomerInvoice(int customerId, LocalDate purchaseDate, List<Item> items) {
+        this.customerId = customerId;
+        this.purchaseDate = purchaseDate;
+        Items = items;
+    }
+
+    public CustomerInvoice(int invoiceId, int customerId, LocalDate purchaseDate, List<Item> items, int points, BigDecimal orderTotal) {
+        this.invoiceId = invoiceId;
+        this.customerId = customerId;
+        this.purchaseDate = purchaseDate;
+        Items = items;
+        this.points = points;
+        this.orderTotal = orderTotal;
+    }
+
     public BigDecimal getOrderTotal() {
         return orderTotal;
     }
