@@ -11,10 +11,10 @@ public class PasswordUtility {
         String TeamLeadPassword = "PaSsWorD";
         String EmployeePassword = "ThisPasswordIsNotOK?";
 
-        String encodedPassword1 = enc.encode(TeamLeadPassword);
-        String encodedPassword2 = enc.encode(EmployeePassword);
-        String encodedPassword3 = enc.encode(ManagerPassword);
-        String encodedPassword4 = enc.encode(AdminPassword);
+        String encodedPassword1 = enc.encode(AdminPassword);
+        String encodedPassword2 = enc.encode(ManagerPassword);
+        String encodedPassword3 = enc.encode(TeamLeadPassword);
+        String encodedPassword4 = enc.encode(EmployeePassword);
 
         System.out.println(encodedPassword1 );
         System.out.println(encodedPassword2 );
@@ -26,8 +26,8 @@ public class PasswordUtility {
 
 
 /*
-$2a$10$8DHk1tXRvizyoteLnZ8Om.9QYtTKHPljviuAWl9pv19Va2Ka4qX0C
-$2a$10$34fic031vNiKOTZhL/0dROVOPJsURKO4vW87Ar2SRmcx3AkDlO5Gi
-$2a$10$xRdjaevHe4tuwuwQOgT3WOhjvp9G9BkmP.IkHzDG1e6yWaUbmor9u
-$2a$10$FOmQ0k/oYwaBUfvIcsLf5eVlVe0Pos/DlLeIdDGC5ryBkOQk0nkge
+$2a$10$tzvtyhT.XBgVc8os0v3T3.ADkgELWaHq0eLsQF8v6CeJT4NMre/4e
+$2a$10$3HknTyr8OEs3F4eRQTwXGOrdrsDNx/MULy8goHGI9v.hnViSkP9w6
+$2a$10$./BSW9mK910lUe3S5MvXyuTnYDK2/1YZnpICQ3fmtHSAjWWarANaS
+$2a$10$VTqgqIKwj9jI7CnMMVwJFeYbufphP0OzLSa76F4ZxheomeuLabj6S
  */

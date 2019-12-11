@@ -1,69 +1,66 @@
-//package com.trilogyed.AdminAPIService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-//
-//import javax.sql.DataSource;
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfig extends WebSecurityConfigurerAdapter{
-//
-//    @Autowired
-//    DataSource dataSource;
-//    @Autowired
-//    public void configAuthentication(AuthenticationManagerBuilder authBuilder) throws Exception {
-//        PasswordEncoder encoder = new BCryptPasswordEncoder();
-//
-//        authBuilder.jdbcAuthentication()
-//                .dataSource(dataSource)
-//                .usersByUsernameQuery(
-//                        "select username, password, enabled from users where username = ?")
-//                .authoritiesByUsernameQuery(
-//                        "select username, authority from authorities where username = ?")
-//                .passwordEncoder(encoder);
-//    }
-//
-//    public void configure(HttpSecurity httpSecurity) throws Exception {
-//
-//        httpSecurity.httpBasic();
-//
-//        httpSecurity.authorizeRequests()
-//                .mvcMatchers(HttpMethod.POST,"/games", "/consoles", "/tShirts").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN")
-//                .mvcMatchers(HttpMethod.DELETE,"/games/{id}", "/consoles/{id}", "/tShirts/{id}").hasAuthority("ROLE_ADMIN")
-//                .mvcMatchers(HttpMethod.PUT,"/games/{id}","/consoles/{id}", "/tShirts/{id}").hasAnyAuthority("ROLE_STAFF", "ROLE_MANAGER", "ROLE_ADMIN")
-//                .mvcMatchers(HttpMethod.GET,"/games", "/consoles", "/tShirts").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/games/{id}", "/consoles/{id}", "/tShirts/{id}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/games/{studio}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/games/{esrb_rating}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/games/{title}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/tShirts/{color}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/tShirts/{size}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .mvcMatchers(HttpMethod.GET,"/consoles/{manufacturer}").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_STAFF", "ROLE_USER")
-//                .anyRequest().permitAll();
-//
-//
-//        httpSecurity
-//                .logout()
-//                .clearAuthentication(true)
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/allDone")
-//                .deleteCookies("JSESSIONID")
-//                .deleteCookies("XSRF-TOKEN")
-//                .invalidateHttpSession(true);
-//
-//        httpSecurity
-//                .csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-//    }
-//
-//
-//}
-//
+package com.trilogyed.AdminAPIService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+    @Autowired
+    DataSource dataSource;
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder authBuilder) throws Exception {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        authBuilder.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery(
+                        "select username, password, enabled from users where username = ?")
+                .authoritiesByUsernameQuery(
+                        "select username, authority from authorities where username = ?")
+                .passwordEncoder(encoder);
+    }
+
+    public void configure(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.httpBasic();
+
+        httpSecurity.authorizeRequests()
+                .mvcMatchers(HttpMethod.DELETE,"/**").hasAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.PUT,"/**").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.GET,"/**").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/**").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.PUT,"/products").hasAnyAuthority("ROLE_TEAMLEAD" , "ROLE_MANAGER")
+                .mvcMatchers(HttpMethod.POST,"/addProduct" ).hasAnyAuthority("ROLE_MANAGER")
+                .mvcMatchers(HttpMethod.POST,"/addCustomer" ).hasAnyAuthority("ROLE_TEAMLEAD" )
+                .mvcMatchers(HttpMethod.GET,"/products").hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_TEAMLEAD", "ROLE_EMPLOYEE")
+                .anyRequest().permitAll();
+
+
+        httpSecurity
+                .logout()
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/allDone")
+                .deleteCookies("JSESSIONID")
+                .deleteCookies("XSRF-TOKEN")
+                .invalidateHttpSession(true);
+
+        httpSecurity
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+
+
+}
+
