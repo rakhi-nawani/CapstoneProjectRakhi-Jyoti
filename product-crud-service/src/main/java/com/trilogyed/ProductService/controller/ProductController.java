@@ -44,7 +44,7 @@ public class ProductController {
         repository.delete(product);
     }
 
-    @GetMapping ("/products/inventory/{id}")
+    @GetMapping ("/products/inventory")
     @ResponseStatus(HttpStatus.OK)
     public List<Product> getProductByInventory ( @PathVariable Integer inventory) {
         List<Product> returnVal = new ArrayList<>();

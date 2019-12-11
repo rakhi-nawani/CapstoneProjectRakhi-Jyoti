@@ -1,5 +1,6 @@
 package com.trilogyed.AdminAPIService.controller;
 
+import com.trilogyed.AdminAPIService.exception.NotFoundException;
 import com.trilogyed.AdminAPIService.model.Customer;
 import com.trilogyed.AdminAPIService.model.Invoice;
 import com.trilogyed.AdminAPIService.model.Level;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,9 +24,14 @@ public class AdminApiController {
     public List<Customer> getAllCustomers(){
         return service.getAllCustomers();
     }
+
     @GetMapping ("/customers/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer getCustomerById ( @PathVariable Integer id){
+        if (id < 1) {
+            throw new IllegalArgumentException("CustomerId must be greater than 0.");
+        }
+
         return service.getCustomerById(id);
     }
 
@@ -47,9 +54,13 @@ public class AdminApiController {
     public List<Product> getAllProducts() {
         return service.getAllProducts();
     }
+
     @GetMapping ("/products/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product getProductById ( @PathVariable Integer id) {
+        if (id < 1) {
+            throw new IllegalArgumentException("ProductId must be greater than 0.");
+        }
         return service.getProductById(id);
     }
 
@@ -86,6 +97,9 @@ public class AdminApiController {
     @RequestMapping(value = "/level/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Level getLevel(@PathVariable int id){
+        if (id < 1) {
+            throw new IllegalArgumentException("LevelId must be greater than 0.");
+        }
         return service.getLevelById(id);
     }
 
@@ -112,7 +126,11 @@ public class AdminApiController {
 
     @RequestMapping(value = "/invoice/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Invoice getInvoice(@PathVariable int id){return service.geInvoiceById(id);}
+    public Invoice getInvoice(@PathVariable int id){
+        if (id < 1) {
+            throw new IllegalArgumentException("InvoiceId must be greater than 0.");
+        }
+        return service.geInvoiceById(id);}
 
     @RequestMapping(value = "/invoice", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)

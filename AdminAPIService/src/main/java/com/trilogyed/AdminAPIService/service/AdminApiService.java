@@ -10,8 +10,10 @@ import com.trilogyed.AdminAPIService.model.Level;
 import com.trilogyed.AdminAPIService.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.chrono.IsoEra;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -80,6 +82,7 @@ public class AdminApiService {
     public void deleteProduct(Product product)  {
         productClient.deleteProduct(product);
     }
+
 
     // LevelPoint //
 

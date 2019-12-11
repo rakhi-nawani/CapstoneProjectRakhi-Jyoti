@@ -87,6 +87,10 @@ public class RetailController {
     @RequestMapping(value = "/invoice/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public CustomerInvoice getInvoiceById(@PathVariable int id) {
+
+        if (id < 1) {
+            throw new IllegalArgumentException("MotoId must be greater than 0.");
+        }
         return service.getInvoicebyId(id);
     }
 
@@ -104,12 +108,16 @@ public class RetailController {
 
     @RequestMapping(value = "/products/inventory", method = RequestMethod.GET)
     public List<Product> getProductsInInventory() {
+
         return service.searchInventory();
     }
 
     @GetMapping("/products/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product getProductById(@PathVariable Integer id) {
+        if (id < 1) {
+            throw new IllegalArgumentException("MotoId must be greater than 0.");
+        }
         return service.getProductByProductId(id);
 
     }
@@ -117,6 +125,9 @@ public class RetailController {
     @GetMapping("/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer getcustomerById(@PathVariable Integer customerId) {
+        if (customerId < 1) {
+            throw new IllegalArgumentException("customerId must be greater than 0.");
+        }
         return service.findCustomer(customerId);
 
     }

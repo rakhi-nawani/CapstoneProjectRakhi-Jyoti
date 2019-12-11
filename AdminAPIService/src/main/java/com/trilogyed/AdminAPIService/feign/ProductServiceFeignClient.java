@@ -26,4 +26,8 @@ public interface ProductServiceFeignClient {
     @ResponseStatus (HttpStatus.NO_CONTENT)
     public void deleteProduct( @RequestBody Product product) ;
 
+    @GetMapping ("/products/inventory")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> getProductByInventory ( @PathVariable Integer inventory);
+
 }
